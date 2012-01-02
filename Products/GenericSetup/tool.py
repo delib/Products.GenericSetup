@@ -119,6 +119,11 @@ def importToolset(context):
         tool_id = str(info['id'])
         tool_class = _resolveDottedName(info['class'])
 
+        if tool_class is None:
+            logger.warning("Not creating required tool %(id)s, because "
+                           "class %(class)s is not found." % info)
+            continue
+
         existing = getattr(aq_base(site), tool_id, None)
         # Don't even initialize the tool again, if it already exists.
         if existing is None:
